@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package geo;
+
+service GeoService {
+    rpc insertStylistAddress (InsertStylistAddressRequest) returns (Empty);
+}
+
+message Empty {}
+
+message InsertStylistAddressRequest {
+    string uid = 1;
+    string address = 2;
+}
+  

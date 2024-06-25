@@ -1,0 +1,11 @@
+/src
+/bin
+/packages
+/node_modules
+
+.env
+.DS_Store
+
+tsconfig.json
+tsup.config.ts
+Dockerfile

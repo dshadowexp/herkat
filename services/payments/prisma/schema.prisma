@@ -1,0 +1,61 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Account {
+  id               String        @id @default(uuid())
+  uid              String        @unique
+  stripeAccountId  String        @unique
+  chargesEnabled   Boolean       @default(false)
+  payoutsEnabled   Boolean       @default(false)
+  detailsSubmitted Boolean       @default(false)
+  createdAt        DateTime      @default(now())
+  Transaction      Transaction[]
+
+  @@unique([uid, stripeAccountId])
+}
+
+model Customer {
+  id               String @id @default(uuid())
+  uid              String @unique
+  stripeCustomerId String @unique
+
+  @@unique([uid, stripeCustomerId])
+}
+
+model Transaction {
+  id            String   @id @default(uuid())
+  externalRef   String   @unique
+  description   String
+  orderId       String
+  destinationId String
+  customerId    String
+  customer      Account  @relation(fields: [customerId], references: [uid])
+  methodId      String
+  amount        Int
+  currency      String
+  status        Status   @default(CHARGED)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+enum Status {
+  CHARGED
+  PENDING
+  SUCCEEDED
+  FAILED
+  REFUNDED
+  DISPUTED
+  CANCELLED
+}

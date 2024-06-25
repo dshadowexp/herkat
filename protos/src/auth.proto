@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package auth;
+
+service AuthService {
+    rpc createAuth (CreateAuthRequest) returns (Empty);
+}
+
+message Empty {}
+
+message CreateAuthRequest {
+    string uid = 1;
+    string role = 2;
+    string type = 3;
+}
+  

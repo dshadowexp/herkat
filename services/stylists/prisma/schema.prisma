@@ -1,0 +1,46 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Stylist {
+  id        String   @id @default(uuid())
+  uid       String   @unique
+  bookings  Int      @default(0)
+  reviews   Int      @default(0)
+  rating    Float    @default(5.0)
+  verified  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Availability {
+  uid       String
+  day       Day
+  startTime String
+  endTime   String
+
+  @@unique([uid, day])
+}
+
+model Block {
+  id        String   @id @default(uuid())
+  uid       String
+  date      DateTime
+  startTime DateTime
+  endTime   DateTime
+}
+
+enum Day {
+  mon
+  tue
+  wed
+  thu
+  fri
+  sat
+  sun
+}

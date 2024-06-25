@@ -1,0 +1,59 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Service {
+  id        String       @id @default(uuid())
+  uid       String
+  sid       String
+  type      ServiceType
+  focus     ServiceFocus @default(main)
+  hairTypes HairType[]
+  genders   Gender[]
+  ages      Age[]        @default([adult])
+  sessions  Session[]    @default([inoffice])
+  duration  Int
+  price     Int
+  currency  String
+}
+
+enum HairType {
+  straight
+  wavy
+  curly
+  coily
+  kinky
+}
+
+enum ServiceType {
+  trim
+  braid
+  color
+  treatment
+}
+
+enum ServiceFocus {
+  main
+  addon
+}
+
+enum Gender {
+  male
+  female
+}
+
+enum Age {
+  elderly
+  child
+  adult
+}
+
+enum Session {
+  inoffice
+  inperson
+}
